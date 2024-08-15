@@ -1,22 +1,30 @@
 import * as React from "react";
 import {ChangeEvent, useRef, useState} from "react";
 import {Button, TextField} from "@mui/material";
+import {useDispatch} from "react-redux";
+import {postData} from "./Thunk/FetchThunk.ts";
 
 const Home = () => {
+
+    const dispatch = useDispatch();
     const urlFile = useRef(null)
-    const [fileName , setFileName] = useState('')
+    const [file, setFile] = useState<File | null>(null);
     const [authorText , setAuthorText] = useState('')
     const [messageText , setMessageText] = useState('')
 
-    const onFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const fileInput = e.target.files;
+
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        dispatch(postData({ author: authorText, message: messageText , photo: file}));
+    };
+
+    const onFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+        const fileInput = e.target.files
 
         if (fileInput && fileInput[0]) {
-            const selectedFile = fileInput[0];
-            setFileName(selectedFile.name);
-            console.log(selectedFile.name);
+            setFile(fileInput[0])
         } else {
-            setFileName('');
+            setFile(null)
         }
     }
     return (
@@ -86,8 +94,24 @@ const Home = () => {
                     }}
                 />
                 <input type={"file"} ref={urlFile} accept="image/*" onChange={onFileChange}/>
-                <Button variant="contained" type={"submit"}>Send!</Button>
+                <Button variant="contained" type={"submit"} onClick={handleSubmit}>Send!</Button>
             </form>
+
+            {/*{data.length === 0 ? (*/}
+            {/*    <div>No messages found</div>*/}
+            {/*) : (*/}
+            {/*    <ul>*/}
+            {/*        {data.map((message, index) => (*/}
+            {/*            <li key={index}>*/}
+            {/*                <strong>Author:</strong> {message.author || 'Anonymous'}<br />*/}
+            {/*                <strong>Message:</strong> {message.message}<br />*/}
+            {/*                {message.photo && (*/}
+            {/*                    <img src={URL.createObjectURL(message.photo)} alt="Uploaded" width="100" />*/}
+            {/*                )}*/}
+            {/*            </li>*/}
+            {/*        ))}*/}
+            {/*    </ul>*/}
+            {/*)}*/}
         </div>
     );
 };
