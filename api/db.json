@@ -13,5 +13,15 @@
     "author": "Test author",
     "message": "Message",
     "photo": "images8b78c6a6-0581-482e-91aa-cf8ea3c03b81.png"
+  },
+  {
+    "author": "Test author",
+    "message": "Message123",
+    "photo": "imagesd6c04cae-d1be-4ec5-8515-411e816a4c05.png"
+  },
+  {
+    "author": "Anonymous",
+    "message": "23",
+    "photo": null
   }
 ]

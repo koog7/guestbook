@@ -1,10 +1,9 @@
 import * as React from "react";
-import {ChangeEvent, useRef, useState} from "react";
+import {ChangeEvent, useEffect, useRef, useState} from "react";
 import {Button, TextField} from "@mui/material";
 import {useDispatch, useSelector} from "react-redux";
-import {postData} from "./Thunk/FetchThunk.ts";
+import {getMessages, postData} from "./Thunk/FetchThunk.ts";
 import {RootState} from "../app/store.ts";
-import { Card, CardContent, CardMedia, Typography, Grid } from '@mui/material';
 import CardMessage from "../components/CardMessage.tsx";
 
 const Home = () => {
@@ -15,15 +14,18 @@ const Home = () => {
     const [authorText , setAuthorText] = useState('')
     const [messageText , setMessageText] = useState('')
     const {data} = useSelector((state: RootState) => state.guestbook);
-    console.log(data)
+
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
         if(messageText){
-            dispatch(postData({ author: authorText, message: messageText , photo: file}));
+            dispatch(postData({ author: authorText, message: messageText , photo: file || undefined}));
         }
-
     };
+
+    useEffect(() => {
+        dispatch(getMessages())
+    }, [dispatch]);
 
     const onFileChange = (e: ChangeEvent<HTMLInputElement>) => {
         const fileInput = e.target.files
