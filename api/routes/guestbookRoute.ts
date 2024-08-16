@@ -19,7 +19,19 @@ guestbookRouter.post('/messages', imagesUpload.single('photo'), async (req, res)
         photo: req.file ? req.file.filename : null,
     }
     await fileDb.addItem(messages);
-    res.send(messages);
 
+    const allMessages = await fileDb.getItems();
+    res.send(allMessages);
+
+});
+
+guestbookRouter.get('/messages', async (req, res) => {
+    try{
+        await fileDb.init();
+        const messages = await fileDb.getItems();
+        res.send(messages);
+    }catch (e) {
+        return res.status(400).send('error')
+    }
 });
 export default guestbookRouter;

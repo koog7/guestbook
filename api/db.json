@@ -1,12 +1,17 @@
 [
   {
-    "author": "123",
+    "author": "Anonymous",
     "message": "123",
-    "photo": "imagesf080a28a-3bb4-4e0b-8d11-ba010ff55c30.png"
+    "photo": null
   },
   {
-    "author": "123",
+    "author": "Anonymous",
     "message": "123",
-    "photo": "imagesd79287a9-553d-49b4-9351-1e249b4b5cbd.png"
+    "photo": null
+  },
+  {
+    "author": "Test author",
+    "message": "Message",
+    "photo": "images8b78c6a6-0581-482e-91aa-cf8ea3c03b81.png"
   }
 ]
