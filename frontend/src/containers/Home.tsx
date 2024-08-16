@@ -20,6 +20,15 @@ const Home = () => {
 
         if(messageText){
             dispatch(postData({ author: authorText, message: messageText , photo: file || undefined}));
+
+
+            setFile(null);
+            setAuthorText('');
+            setMessageText('');
+
+            if (urlFile.current) {
+                urlFile.current.value = '';
+            }
         }
     };
 
