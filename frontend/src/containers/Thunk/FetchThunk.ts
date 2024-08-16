@@ -28,7 +28,6 @@ export const postData = createAsyncThunk<Message[], { author?: string; message: 
 
             if(photo){
                 formData.append('photo', photo)
-                console.log('photo', photo)
             }
             const response = await axiosAPI.post(`/messages` , formData);
             return response.data;

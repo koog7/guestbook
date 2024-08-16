@@ -1,8 +1,11 @@
 import * as React from "react";
 import {ChangeEvent, useRef, useState} from "react";
 import {Button, TextField} from "@mui/material";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {postData} from "./Thunk/FetchThunk.ts";
+import {RootState} from "../app/store.ts";
+import { Card, CardContent, CardMedia, Typography, Grid } from '@mui/material';
+import CardMessage from "../components/CardMessage.tsx";
 
 const Home = () => {
 
@@ -11,11 +14,15 @@ const Home = () => {
     const [file, setFile] = useState<File | null>(null);
     const [authorText , setAuthorText] = useState('')
     const [messageText , setMessageText] = useState('')
-
-
+    const {data} = useSelector((state: RootState) => state.guestbook);
+    console.log(data)
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        dispatch(postData({ author: authorText, message: messageText , photo: file}));
+
+        if(messageText){
+            dispatch(postData({ author: authorText, message: messageText , photo: file}));
+        }
+
     };
 
     const onFileChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -30,7 +37,7 @@ const Home = () => {
     return (
 
         <div>
-            <form style={{display: 'flex', flexDirection: 'column', gap: '10px', marginTop: '25px'}}>
+            <form style={{display: 'flex', flexDirection: 'column', gap: '10px', marginTop: '25px'}} onSubmit={handleSubmit}>
                 <TextField
                     id="outlined-controlled"
                     label="Author name"
@@ -94,24 +101,18 @@ const Home = () => {
                     }}
                 />
                 <input type={"file"} ref={urlFile} accept="image/*" onChange={onFileChange}/>
-                <Button variant="contained" type={"submit"} onClick={handleSubmit}>Send!</Button>
+                <Button variant="contained" type={"submit"}>Send!</Button>
             </form>
 
-            {/*{data.length === 0 ? (*/}
-            {/*    <div>No messages found</div>*/}
-            {/*) : (*/}
-            {/*    <ul>*/}
-            {/*        {data.map((message, index) => (*/}
-            {/*            <li key={index}>*/}
-            {/*                <strong>Author:</strong> {message.author || 'Anonymous'}<br />*/}
-            {/*                <strong>Message:</strong> {message.message}<br />*/}
-            {/*                {message.photo && (*/}
-            {/*                    <img src={URL.createObjectURL(message.photo)} alt="Uploaded" width="100" />*/}
-            {/*                )}*/}
-            {/*            </li>*/}
-            {/*        ))}*/}
-            {/*    </ul>*/}
-            {/*)}*/}
+            {data.length === 0 ? (
+                <div>No messages found</div>
+            ) : (
+                <div>
+                    {data.map((message, index) => (
+                        <CardMessage key={index} photo={message.photo} author={message.author} message={message.message} />
+                    ))}
+                </div>
+            )}
         </div>
     );
 };
